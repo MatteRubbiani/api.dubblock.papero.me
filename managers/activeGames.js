@@ -1,7 +1,7 @@
 const gameConfig = require("../constants/gameConfig")
 const GameModel = require("../models/Game")
 
-class ActiveGamePlayers{
+class ActiveGamePlayers {
     constructor(playerDict) {
         this.id = playerDict.id
         this.color = playerDict.color
@@ -14,7 +14,7 @@ class ActiveGamePlayers{
     }
 }
 
-class ActiveGames{
+class ActiveGames {
     constructor(gameDict) {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
@@ -23,7 +23,7 @@ class ActiveGames{
         this.difficulty = gameDict.difficulty
         this.createdAt = gameDict.createdAt
         this.players = []
-        for (let i=0; i<gameDict.players.length; i++){
+        for (let i = 0; i < gameDict.players.length; i++) {
             let p = new ActiveGamePlayers(gameDict.players[i])
             this.players.push(p)
         }
@@ -64,7 +64,7 @@ class ActiveGames{
     }
 
 
-    async saveToDb(){
+    async saveToDb() {
         let d = {
             id: this.id,
             status: this.status,
@@ -76,7 +76,7 @@ class ActiveGames{
         await GameModel.replaceOne({id: this.id}, d, {upsert: true})
     }
 
-    async deleteGame(){
+    async deleteGame() {
         await GameModel.remove({id: this.id})
     }
 
@@ -89,10 +89,10 @@ class ActiveGames{
         return g
     }
 
-    static async createActiveGame(activeUser, gameId, username){
+    static async createActiveGame(activeUser, gameId, username) {
         const dict = {
-            id : gameId,
-            status : 0,
+            id: gameId,
+            status: 0,
             map: [], //create map ...
             players: [
                 {
@@ -106,7 +106,8 @@ class ActiveGames{
                     admin: true
 
                 }
-            ]
+            ],
+            difficulty: 0;
         }
         let g = new ActiveGames(dict)
         return g
