@@ -37,17 +37,18 @@ io.on('connection', socket => {
         }
         if (game.status === 0) {
             console.log(game.getGame(userId))
-            socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
+            await sendLobbyChangedToPlayers(game)
         }
     })
 })
 
 
-function sendLobbyChangedToPlayers(game) {
+async function sendLobbyChangedToPlayers(game) {
     let gameUsers = game.players
     for (let i = 0; i < gameUsers.length; i++) {
         let player = gameUsers[i]
-        let s = io.sockets.connected[player.sessionId]
+        let u = await ActiveUsersManager.findActiveUserById(player.id)
+        let s = io.sockets.connected[u.sessionId]
         if (s) {
             s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(player.id))
         }
