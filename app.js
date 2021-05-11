@@ -41,6 +41,30 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on(Endpoints.CHANGE_PAWN, async data => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        let s = game.changePawn(user.userId, data["shape"], data["color"])
+        if (s) {
+            await sendLobbyChangedToPlayers(game)
+            await game.saveToDb()
+        }
+    })
+
+    socket.on(Endpoints.QUIT_GAME, async () => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        let s = game.removePlayer(user.userId)
+        if (s === "user_deleted"){
+            await sendLobbyChangedToPlayers(game)
+            await game.saveToDb()
+        }
+    })
+
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null

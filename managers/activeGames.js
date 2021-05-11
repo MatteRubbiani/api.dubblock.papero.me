@@ -65,10 +65,10 @@ class ActiveGames {
         return p
     }
 
-    addPlayer(userId, username){
+    addPlayer(userId, username) {
         if (this.getUserByUserId(userId)) return null
         let sp = this.getFirstAvailableShapeAndColor()
-        let p =  {
+        let p = {
             id: userId,
             localId: Date.now(),
             username: username,
@@ -79,26 +79,48 @@ class ActiveGames {
         this.players.push(p)
     }
 
-    getFirstAvailableShapeAndColor(){
-        for (let s=0; s<4; s++){
-            for (let c=0; c<4; c++){
-                for (let i=0; i<this.players.length; i++){
+    getFirstAvailableShapeAndColor() {
+        for (let s = 0; s < 4; s++) {
+            for (let c = 0; c < 4; c++) {
+                for (let i = 0; i < this.players.length; i++) {
                     if (this.players[i].shape !== s || this.players[i].color !== c) return [s, c]
                 }
             }
         }
     }
 
-    removePlayer(userId){
+    removePlayer(userId) {
         let newPlayers = []
         this.players.forEach(p => {
-            if (p.id !== userId){
+            if (p.id !== userId) {
                 newPlayers.push(p)
             }
         })
         if (newPlayers.length <= 0) return "delete_game"
         this.players = newPlayers
         return "user_deleted"
+    }
+
+    checkAvailablePawn(shape, color) {
+        let available = true
+        this.players.forEach(p => {
+            if (p.shape === shape && p.color === color) available = false
+        })
+        return available
+    }
+
+    changePawn(userId, shape, color) {
+        if (this.checkAvailablePawn(shape, color)) {
+            for (let i = 0; i < this.players.length; i++) {
+                let p = this.players[i]
+                if (p.id === userId) {
+                    p.shape = shape
+                    p.color = color
+                }
+            }
+            return true
+        }
+        return false
     }
 
 
