@@ -48,7 +48,7 @@ class ActiveGames {
             status: this.status,
             map: this.map,
             players: players,
-            localId: this.getUserByUserId(userId).localId,
+            localId: this.getUserByUserId(userId) ? this.getUserByUserId(userId).localId : null,
             settings: {
                 difficulty: this.difficulty
             }
@@ -63,6 +63,29 @@ class ActiveGames {
             if (player.id === userId) p = player
         })
         return p
+    }
+
+    addPlayer(userId, username){
+        if (this.getUserByUserId(userId)) return null
+        let sp = this-this.getFirstAvailableShapeAndColor()
+        let p =  {
+            localId: Date.now(),
+            username: username,
+            shape: sp[0],
+            color: sp[1],
+            admin: false
+        }
+        this.players.push(p)
+    }
+
+    getFirstAvailableShapeAndColor(){
+        for (let s=0; s<4; s++){
+            for (let c=0; c<4; c++){
+                for (let i=0; i<this.players.length; i++){
+                    if (this.players[i].shape !== s || this.players[i].color !== c) return [s, c]
+                }
+            }
+        }
     }
 
 
