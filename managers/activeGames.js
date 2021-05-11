@@ -67,7 +67,7 @@ class ActiveGames {
 
     addPlayer(userId, username){
         if (this.getUserByUserId(userId)) return null
-        let sp = this-this.getFirstAvailableShapeAndColor()
+        let sp = this.getFirstAvailableShapeAndColor()
         let p =  {
             id: userId,
             localId: Date.now(),
