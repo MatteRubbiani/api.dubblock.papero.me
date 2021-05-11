@@ -46,11 +46,10 @@ io.on('connection', socket => {
         if (!user) return null
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
-        let s = game.changePawn(user.userId, data["shape"], data["color"])
-        if (s) {
-            await sendLobbyChangedToPlayers(game)
-            await game.saveToDb()
-        }
+        game.changePawn(user.userId, data["shape"], data["color"])
+        await sendLobbyChangedToPlayers(game)
+        await game.saveToDb()
+
     })
 
     socket.on(Endpoints.QUIT_GAME, async () => {
