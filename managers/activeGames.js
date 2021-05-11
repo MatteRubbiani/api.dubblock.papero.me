@@ -107,7 +107,7 @@ class ActiveGames {
 
                 }
             ],
-            difficulty: 0;
+            difficulty: 0
         }
         let g = new ActiveGames(dict)
         return g
