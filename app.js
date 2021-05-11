@@ -85,17 +85,18 @@ io.on('connection', socket => {
     })
 })
 
-
-async function sendLobbyChangedToPlayers(game) {
-    let gameUsers = game.players
-    for (let i = 0; i < gameUsers.length; i++) {
-        let player = gameUsers[i]
-        let u = await ActiveUsersManager.findActiveUserById(player.id)
+async function sendGameToGame(game, endpoint){
+    let activeUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+    activeUsers.forEach(u => {
         let s = io.sockets.connected[u.sessionId]
         if (s) {
-            s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(player.id))
+            s.emit(endpoint, game.getGame(u.userId))
         }
-    }
+    })
+}
+
+async function sendLobbyChangedToPlayers(game) {
+    await sendGameToGame(game, Endpoints.LOBBY_MODIFIED)
 }
 
 
