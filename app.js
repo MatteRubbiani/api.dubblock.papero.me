@@ -34,6 +34,7 @@ io.on('connection', socket => {
             await game.saveToDb()
         } else {
             game.addPlayer(userId, username)
+            await game.saveToDb()
         }
         if (game.status === 0) {
             console.log(game.getGame(userId))
