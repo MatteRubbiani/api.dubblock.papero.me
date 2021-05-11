@@ -99,6 +99,8 @@ class ActiveGames {
             }
         })
         if (newPlayers.length <= 0) return "delete_game"
+        let player = this.getUserByUserId(userId)
+        if (player.admin) newPlayers[0].admin = true
         this.players = newPlayers
         return "user_deleted"
     }
