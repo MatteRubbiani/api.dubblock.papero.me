@@ -79,6 +79,7 @@ io.on('connection', socket => {
                 }
                 if (success === "user_deleted") {
                     await sendLobbyChangedToPlayers(game)
+                    await game.saveToDb()
                 }
             }
         }
