@@ -32,12 +32,31 @@ io.on('connection', socket => {
         if (!game) {
             game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
-        }else{
+        } else {
             game.addPlayer(userId, username)
         }
         if (game.status === 0) {
             console.log(game.getGame(userId))
             await sendLobbyChangedToPlayers(game)
+        }
+    })
+
+    socket.on('disconnect', async () => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (game) {
+            if (game.status === 0) {
+                let success = game.removePlayer(user.userId)
+                if (success === "delete_game") {
+                    await game.deleteGame()
+                    //await sendLobbyChangedToPlayers(game)
+                    return 0
+                }
+                if (success === "user_deleted") {
+                    await sendLobbyChangedToPlayers(game)
+                }
+            }
         }
     })
 })

@@ -89,6 +89,18 @@ class ActiveGames {
         }
     }
 
+    removePlayer(userId){
+        let newPlayers = []
+        this.players.forEach(p => {
+            if (p.id !== userId){
+                newPlayers.push(p)
+            }
+        })
+        if (newPlayers.length <= 0) return "delete_game"
+        this.players = newPlayers
+        return "user_deleted"
+    }
+
 
     async saveToDb() {
         let d = {
