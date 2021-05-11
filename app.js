@@ -25,12 +25,12 @@ io.on('connection', socket => {
         if (!data["gameId"]) return null
         let gameId = data["gameId"].toLowerCase()
         if (!userId || !gameId) return null
-        socket.join(gameId)
+        let username = cookies["username"]
         let user = new ActiveUsersManager(userId, gameId, socket.id)
         await user.saveToDb()
         let game = await ActiveGames.getActiveGameById(gameId)
         if (!game) {
-            game = await ActiveGames.createActiveGame(user, gameId)
+            game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
         }
         if (game.status === 0) {
