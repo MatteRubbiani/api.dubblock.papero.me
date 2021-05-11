@@ -84,7 +84,7 @@ class ActiveGames {
             for (let c = 0; c < 4; c++) {
                 let av = true
                 for (let i = 0; i < this.players.length; i++) {
-                    if (this.players[i].shape !== s && this.players[i].color !== c) av = false
+                    if (this.players[i].shape === s && this.players[i].color === c) av = false
                 }
                 if (av) return [s, c]
             }
