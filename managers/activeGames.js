@@ -48,6 +48,7 @@ class ActiveGames {
             status: this.status,
             map: this.map,
             players: players,
+            localId: this.getUserByUserId(userId).localId,
             settings: {
                 difficulty: this.difficulty
             }
