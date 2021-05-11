@@ -13,6 +13,7 @@ app.use("/games", require("./routes/game"))
 
 io.on('connection', socket => {
     socket.on(Endpoints.CONNECT_TO_GAME, async data => {
+        console.log("connectionnnn")
         let cookies = socket.handshake.headers.cookie
         try {
             cookies = cookie.parse(cookies)
