@@ -10,6 +10,7 @@ class ActiveGamePlayers {
         this.localId = playerDict.localId
         this.status = playerDict.status
         this.username = playerDict.username
+        this.admin = playerDict.admin
         //agiungerai effetti speciali
     }
 }
