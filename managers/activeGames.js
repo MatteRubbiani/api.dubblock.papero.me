@@ -99,7 +99,7 @@ class ActiveGames{
                     id: activeUser.userId,
                     sessionId: activeUser.sessionId,
                     localId: 0,
-                    status: 1,
+                    status: 0,
                     username: username,
                     shape: 1,
                     color: 1,
