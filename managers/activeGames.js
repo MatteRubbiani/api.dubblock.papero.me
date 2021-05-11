@@ -69,6 +69,7 @@ class ActiveGames {
         if (this.getUserByUserId(userId)) return null
         let sp = this-this.getFirstAvailableShapeAndColor()
         let p =  {
+            id: userId,
             localId: Date.now(),
             username: username,
             shape: sp[0],
