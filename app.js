@@ -42,6 +42,26 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on(Endpoints.JOIN_GAME, async data => {
+        let cookies = socket.handshake.headers.cookie
+        try {
+            cookies = cookie.parse(cookies)
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        let username = cookies["username"]
+        game.addPlayer(user.userId, username)
+        await game.saveToDb()
+
+
+    })
+
     socket.on(Endpoints.CHANGE_PAWN, async data => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null
