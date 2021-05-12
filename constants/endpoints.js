@@ -3,7 +3,8 @@ Endpoints = {
     LOBBY_MODIFIED: "lobby-modified", //{players: [], currentPlayer: 0, totalTurns: 5, admin: 0}
     JOIN_GAME: "join-game",
     QUIT_GAME: "quit-game",
-    CHANGE_PAWN: "change-pawn"
+    CHANGE_PAWN: "change-pawn",
+    CHANGE_DIFFICULTY: "change-difficulty"
 }
 
 module.exports = Endpoints

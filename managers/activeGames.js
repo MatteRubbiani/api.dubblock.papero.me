@@ -127,6 +127,10 @@ class ActiveGames {
         return false
     }
 
+    changeDifficulty(diff){
+        this.difficulty = diff
+    }
+
 
     async saveToDb() {
         let d = {

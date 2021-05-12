@@ -65,6 +65,16 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on(Endpoints.CHANGE_DIFFICULTY, async difficulty => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        game.changeDifficulty(parseInt(difficulty))
+        await sendLobbyChangedToPlayers(game)
+        await game.saveToDb()
+
+    })
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null
