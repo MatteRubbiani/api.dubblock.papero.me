@@ -57,6 +57,7 @@ io.on('connection', socket => {
         if (!game) return null
         let username = cookies["username"]
         game.addPlayer(user.userId, username)
+        await sendLobbyChangedToPlayers(game)
         await game.saveToDb()
 
 
