@@ -5,7 +5,7 @@ const Games = require("../managers/activeGames")
 
 /* GET users listing. */
 router.get('/getNewId', async function(req, res, next) {
-    let id = makeId()
+    let id = makeId(5)
     while (await Games.getActiveGameById(id)){
         id = makeId()
     }
