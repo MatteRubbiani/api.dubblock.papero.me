@@ -36,8 +36,9 @@ io.on('connection', socket => {
             await game.saveToDb()
         }
         if (game.status === 0) {
-            console.log(game.getGame(userId))
             await sendLobbyChangedToPlayers(game)
+        }else if(game.status === 1){
+            await sendGameChangedToPlayers(game)
         }
     })
 
