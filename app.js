@@ -13,7 +13,6 @@ app.use("/games", require("./routes/game"))
 
 io.on('connection', socket => {
     socket.on(Endpoints.CONNECT_TO_GAME, async data => {
-        console.log("connectionnnn")
         let cookies = socket.handshake.headers.cookie
         try {
             cookies = cookie.parse(cookies)
@@ -59,8 +58,6 @@ io.on('connection', socket => {
         game.addPlayer(user.userId, username)
         await sendLobbyChangedToPlayers(game)
         await game.saveToDb()
-
-
     })
 
     socket.on(Endpoints.CHANGE_PAWN, async data => {
@@ -71,7 +68,6 @@ io.on('connection', socket => {
         game.changePawn(user.userId, data["shape"], data["color"])
         await sendLobbyChangedToPlayers(game)
         await game.saveToDb()
-
     })
 
     socket.on(Endpoints.QUIT_GAME, async () => {
@@ -94,8 +90,18 @@ io.on('connection', socket => {
         game.changeDifficulty(parseInt(difficulty))
         await sendLobbyChangedToPlayers(game)
         await game.saveToDb()
-
     })
+
+    socket.on(Endpoints.START_GAME, async ()=> {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        game.startGame()
+        await sendGameChangedToPlayers(game)
+        await game.saveToDb()
+    })
+
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null
@@ -131,5 +137,8 @@ async function sendLobbyChangedToPlayers(game) {
     await sendGameToGame(game, Endpoints.LOBBY_MODIFIED)
 }
 
+async function sendGameChangedToPlayers(game) {
+    await sendGameToGame(game, Endpoints.GAME_MODIFIED)
+}
 
 http.listen(3004)

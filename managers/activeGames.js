@@ -131,6 +131,10 @@ class ActiveGames {
         this.difficulty = diff
     }
 
+    startGame(){
+        this.status = 1
+    }
+
 
     async saveToDb() {
         let d = {
