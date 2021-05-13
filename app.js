@@ -13,7 +13,6 @@ app.use("/games", require("./routes/game"))
 
 io.on('connection', socket => {
     socket.on(Endpoints.CONNECT_TO_GAME, async data => {
-        console.log("connnect")
         let cookies = socket.handshake.headers.cookie
         try {
             cookies = cookie.parse(cookies)
@@ -22,7 +21,6 @@ io.on('connection', socket => {
             return null
         }
         let userId = cookies["userId"]
-        console.log(cookies, data)
         if (!data["gameId"]) return null
         let gameId = data["gameId"].toLowerCase()
         if (!userId || !gameId) return null
@@ -37,7 +35,6 @@ io.on('connection', socket => {
             game.addPlayer(userId, username)
             await game.saveToDb()
         }
-        console.log(game)
         if (game.status === 0) {
             console.log(game.getGame(userId))
             await sendLobbyChangedToPlayers(game)
