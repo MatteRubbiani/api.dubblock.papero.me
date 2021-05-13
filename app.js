@@ -13,6 +13,7 @@ app.use("/games", require("./routes/game"))
 
 io.on('connection', socket => {
     socket.on(Endpoints.CONNECT_TO_GAME, async data => {
+        console.log("connnect")
         let cookies = socket.handshake.headers.cookie
         try {
             cookies = cookie.parse(cookies)
@@ -41,7 +42,7 @@ io.on('connection', socket => {
         }
     })
 
-    socket.on(Endpoints.JOIN_GAME, async data => {
+    socket.on(Endpoints.JOIN_GAME, async () => {
         let cookies = socket.handshake.headers.cookie
         try {
             cookies = cookie.parse(cookies)
