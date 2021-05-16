@@ -34,6 +34,7 @@ class ActiveGames {
 
     getGame(userId) {
         let players = []
+        let blocks = []
         if (this.status === 0){
             this.players.forEach(p => {
                 players.push(
@@ -62,6 +63,15 @@ class ActiveGames {
                     }
                 )
             })
+            for (let r=0; r<this.blocks.length; r++){
+                let row = this.blocks[r]
+                for (let c=0; c<row.length; c++){
+                    if (row[c] !== 0) blocks.push({
+                        row: r,
+                        column: c
+                    })
+                }
+            }
         }
 
         let g = {
