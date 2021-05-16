@@ -64,6 +64,7 @@ class ActiveGames {
                 )
             })
             for (let r=0; r<this.blocks.length; r++){
+                console.log(r)
                 let row = this.blocks[r]
                 for (let c=0; c<row.length; c++){
                     console.log(row[c])
