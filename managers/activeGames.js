@@ -66,6 +66,7 @@ class ActiveGames {
             for (let r=0; r<this.blocks.length; r++){
                 let row = this.blocks[r]
                 for (let c=0; c<row.length; c++){
+                    console.log(row[c])
                     if (row[c] !== 0) blocks.push({
                         row: r,
                         column: c
