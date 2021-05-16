@@ -31,13 +31,12 @@ io.on('connection', socket => {
         if (!game) {
             game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
-        } else {
+        } else if (game.status === 1){
             game.addPlayer(userId, username)
-            await game.saveToDb()
-        }
-        if (game.status === 0) {
             await sendLobbyChangedToPlayers(game)
-        }else if(game.status === 1){
+            await game.saveToDb()
+        } else if(game.status === 1){
+            game.changeUserOnline(user.userId, true)
             await sendGameChangedToPlayers(game)
         }
     })
