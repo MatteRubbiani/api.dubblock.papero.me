@@ -179,7 +179,7 @@ class ActiveGames {
     changeUserOnline(userId, online){
         console.log(this.players)
         this.players.forEach(player => {
-            if (player && player.id === userId) player.online = online
+            if (player) if(player.id === userId) player.online = online
         })
     }
 
