@@ -57,7 +57,7 @@ class ActiveGames {
                         color: p.color,
                         admin: p.admin,
                         online: p.online,
-                        playing: false, //controlla
+                        playing: true, //controlla
                         row: p.row, // non darli tutti ovvio amenoche non sia ribìvelazione
                         column: p.column // " "
                     }
