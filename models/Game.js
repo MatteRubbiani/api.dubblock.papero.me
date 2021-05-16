@@ -14,8 +14,8 @@ const GameSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    map: {
-        type: Number,
+    blocks: {
+        type: Array,
     },
     difficulty: {
         type: Number,
@@ -29,6 +29,14 @@ const GameSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    rows: {
+        type: Number,
+        default: 0
+    },
+    columns: {
+        type: Number,
+        default: 0
+    }
 })
 
 module.exports = mongoose.model("Games", GameSchema)

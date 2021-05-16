@@ -1,17 +1,17 @@
-const gameConfig = require("../constants/gameConfig")
 const GameModel = require("../models/Game")
+const createBlocks = require("../constants/constants").createBlocks
 
 class ActiveGamePlayers {
     constructor(playerDict) {
         this.id = playerDict.id
         this.color = playerDict.color
         this.shape = playerDict.shape
-        this.position = playerDict.position
         this.localId = playerDict.localId
-        this.status = playerDict.status
+        this.online = playerDict.online
         this.username = playerDict.username
         this.admin = playerDict.admin
-        //agiungerai effetti speciali
+        this.row = playerDict.row
+        this.column = playerDict.column
     }
 }
 
@@ -20,7 +20,6 @@ class ActiveGames {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
         this.status = gameDict.status
-        this.map = gameDict.map
         this.difficulty = gameDict.difficulty
         this.createdAt = gameDict.createdAt
         this.players = []
@@ -28,29 +27,52 @@ class ActiveGames {
             let p = new ActiveGamePlayers(gameDict.players[i])
             this.players.push(p)
         }
+        this.blocks = gameDict.blocks
+        this.rows = gameDict.rows
+        this.columns = gameDict.columns
     }
 
     getGame(userId) {
         let players = []
-        this.players.forEach(p => {
-            players.push(
-                {
-                    localId: p.localId,
-                    username: p.username,
-                    shape: p.shape,
-                    color: p.color,
-                    admin: p.admin,
-                    status: p.status,
-                }
-            )
-        })
+        if (this.status === 0){
+            this.players.forEach(p => {
+                players.push(
+                    {
+                        localId: p.localId,
+                        username: p.username,
+                        shape: p.shape,
+                        color: p.color,
+                        admin: p.admin,
+                    }
+                )
+            })
+        }else if (this.status === 1){
+            this.players.forEach(p => {
+                players.push(
+                    {
+                        localId: p.localId,
+                        username: p.username,
+                        shape: p.shape,
+                        color: p.color,
+                        admin: p.admin,
+                        online: p.online,
+                        playing: false, //controlla
+                        row: p.row, // non darli tutti ovvio amenoche non sia ribìvelazione
+                        column: p.column // " "
+                    }
+                )
+            })
+        }
+
         let g = {
             status: this.status,
-            map: this.map,
+            blocks: this.blocks,
             players: players,
             localId: this.getUserByUserId(userId) ? this.getUserByUserId(userId).localId : null,
             settings: {
-                difficulty: this.difficulty
+                difficulty: this.difficulty,
+                rows: this.rows,
+                columns: this.columns
             }
 
         }
@@ -133,6 +155,12 @@ class ActiveGames {
 
     startGame(){
         this.status = 1
+        let blocks = createBlocks(this.difficulty)
+        this.blocks = blocks
+        this.players.forEach(p => {
+            p.row = 0
+            p.column = Math.floor(Math.random() * this.columns)
+        })
     }
 
 
@@ -140,10 +168,12 @@ class ActiveGames {
         let d = {
             id: this.id,
             status: this.status,
-            map: this.map,
+            blocks: this.blocks,
             difficulty: this.difficulty,
             createdAt: this.createdAt,
             players: this.players,
+            rows: this.rows,
+            columns: this.columns
         }
         await GameModel.replaceOne({id: this.id}, d, {upsert: true})
     }
@@ -165,7 +195,7 @@ class ActiveGames {
         const dict = {
             id: gameId,
             status: 0,
-            map: [], //create map ...
+            blocks: [],
             players: [
                 {
                     id: activeUser.userId,
