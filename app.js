@@ -121,7 +121,7 @@ io.on('connection', socket => {
                 }
             }else if (game.status === 1){
                 game.changeUserOnline(user.userId, false)
-                await sendGameChangedToPlayers()
+                await sendGameChangedToPlayers(game)
                 await game.saveToDb()
             }
         }
