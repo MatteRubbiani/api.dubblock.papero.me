@@ -76,7 +76,7 @@ class ActiveGames {
 
         let g = {
             status: this.status,
-            blocks: blocks,
+            obstacles: blocks,
             players: players,
             localId: this.getUserByUserId(userId) ? this.getUserByUserId(userId).localId : null,
             settings: {
