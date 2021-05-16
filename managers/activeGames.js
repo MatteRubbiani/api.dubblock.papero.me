@@ -65,7 +65,6 @@ class ActiveGames {
             })
             console.log(this.blocks)
             for (let r=0; r<this.blocks.length; r++){
-                console.log(r)
                 let row = this.blocks[r]
                 for (let c=0; c<row.length; c++){
                     console.log(row[c])
@@ -169,11 +168,13 @@ class ActiveGames {
     startGame(){
         this.status = 1
         let blocks = createBlocks(this.difficulty)
-        this.blocks = blocks
+        this.blocks = blocks.blocks
         this.players.forEach(p => {
             p.row = 0
             p.column = Math.floor(Math.random() * this.columns)
         })
+        this.rows = blocks.rows
+        this.columns = blocks.columns
     }
 
 
