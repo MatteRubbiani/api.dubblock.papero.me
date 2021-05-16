@@ -119,6 +119,10 @@ io.on('connection', socket => {
                     await sendLobbyChangedToPlayers(game)
                     await game.saveToDb()
                 }
+            }else if (game.status === 1){
+                game.changeUserOnline(user.userId, false)
+                await sendGameChangedToPlayers()
+                await game.saveToDb()
             }
         }
     })

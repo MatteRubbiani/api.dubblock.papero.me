@@ -106,7 +106,8 @@ class ActiveGames {
             username: username,
             shape: sp[0],
             color: sp[1],
-            admin: false
+            admin: false,
+            online: true
         }
         this.players.push(p)
     }
@@ -175,6 +176,12 @@ class ActiveGames {
         this.columns = blocks.columns
     }
 
+    changeUserOnline(userId, online){
+        this.players.forEach(p => {
+            if (p.id === userId) p.online = online
+        })
+    }
+
 
     async saveToDb() {
         let d = {
@@ -213,7 +220,7 @@ class ActiveGames {
                     id: activeUser.userId,
                     sessionId: activeUser.sessionId,
                     localId: 0,
-                    status: 0,
+                    online: true,
                     username: username,
                     shape: 1,
                     color: 1,
