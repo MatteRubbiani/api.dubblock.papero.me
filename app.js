@@ -121,7 +121,7 @@ io.on('connection', socket => {
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
         game.moveBlock(data.from_row, data.from_column, data.to_row, data.to_column)
-        //await sendGameChangedToPlayers(game)
+        await sendGameChangedToPlayers(game)
         await sendToGame(data, Endpoints.MOVE_BLOCK, game)
         await game.saveToDb()
     })
