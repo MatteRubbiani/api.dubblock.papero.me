@@ -49,6 +49,7 @@ class ActiveGames {
                 )
             })
         } else if (this.status === 1) {
+            players = this.getPlayers(userId, false) //aggiungi revelation
             for (let r = 0; r < this.blocks.length; r++) {
                 let row = this.blocks[r]
                 for (let c = 0; c < row.length; c++) {
@@ -63,7 +64,7 @@ class ActiveGames {
         let g = {
             status: this.status,
             obstacles: blocks,
-            players: this.getPlayers(userId, false), //aggiungi revelation,
+            players: players,
             localId: this.getUserByUserId(userId) ? this.getUserByUserId(userId).localId : null,
             settings: {
                 difficulty: this.difficulty,
