@@ -183,6 +183,15 @@ class ActiveGames {
         })
     }
 
+    movePawn(userId, row, column){
+        this.players.forEach(p => {
+            if (p.id === userId){
+                p.row = row
+                p.column = column
+            }
+        })
+        //occhio ai turni
+    }
 
     async saveToDb() {
         let d = {

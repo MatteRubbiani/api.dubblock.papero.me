@@ -102,6 +102,16 @@ io.on('connection', socket => {
         await game.saveToDb()
     })
 
+    socket.on(Endpoints.MOVE_PAWN, async data => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        game.movePawn(user.userId, data.row, data.column)
+        await sendGameChangedToPlayers(game)
+        await game.saveToDb()
+    })
+
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null
