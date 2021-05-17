@@ -181,10 +181,11 @@ async function sendGameChangedToPlayers(game) {
 }
 
 async function sendYourTurn(game){
-    game.players.forEach(p => {
+    for (let i=0; i<game.players.length; i++){
+        let p = game.players[i]
         console.log("mitting your turn")
         if (p.playing){
-            let u = ActiveUsersManager.findActiveUserById(p.id)
+            let u = await ActiveUsersManager.findActiveUserById(p.id)
             console.log(u)
             let s = io.sockets.connected[u.sessionId]
             console.log("found player: ", p)
