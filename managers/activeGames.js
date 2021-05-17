@@ -171,7 +171,9 @@ class ActiveGames {
         this.players.forEach(p => {
             p.row = 0
             p.column = Math.floor(Math.random() * this.columns)
+            p.playing = false
         })
+        this.players[0].playing = true
         this.rows = blocks.rows
         this.columns = blocks.columns
     }
@@ -183,14 +185,24 @@ class ActiveGames {
         })
     }
 
+    nextTurn(){
+        let n = 0
+        for (let p=0; p<this.players.length; p++){
+            if (this.players[p].playing) n = p; this.players[p].playing = false
+        }
+        n = (n + 1) % this.players.length
+        this.players[n].playing = true
+
+    }
+
     movePawn(userId, row, column){
         this.players.forEach(p => {
-            if (p.id === userId){
+            if (p.id === userId && p.playing){
                 p.row = row
                 p.column = column
             }
         })
-        //occhio ai turni
+        this.nextTurn()
     }
 
     moveBlock(fromR, fromC, toR, toC){
