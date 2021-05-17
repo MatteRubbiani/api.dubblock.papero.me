@@ -193,7 +193,7 @@ async function sendYourTurn(game){
                 s.emit(Endpoints.YOUR_TURN, "")
             }
         }
-    })
+    }
 }
 
 http.listen(3004)
