@@ -93,6 +93,7 @@ class ActiveGames {
                 row: p.row,
                 column: col
             }
+            players.push(player)
         })
         return players
     }
