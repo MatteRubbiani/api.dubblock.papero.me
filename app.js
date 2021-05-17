@@ -31,7 +31,7 @@ io.on('connection', socket => {
         if (!game) {
             game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
-        } else if (game.status === 1){
+        } else if (game.status === 0){
             game.addPlayer(userId, username)
             await sendLobbyChangedToPlayers(game)
             await game.saveToDb()
