@@ -29,6 +29,7 @@ io.on('connection', socket => {
         await user.saveToDb()
         let game = await ActiveGames.getActiveGameById(gameId)
         console.log(gameId)
+        console.log(game)
         if (!game) {
             game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
