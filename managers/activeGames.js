@@ -80,7 +80,7 @@ class ActiveGames {
         let players = []
         this.players.forEach(p => {
             let col = null
-            if (p.userId === userId) col = p.column
+            if (p.id === userId) col = p.column
             if (revelation) col = p.column
             let player = {
                 localId: p.localId,
