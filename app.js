@@ -185,6 +185,7 @@ async function sendYourTurn(game){
         console.log("mitting your turn")
         if (p.playing){
             let u = ActiveUsersManager.findActiveUserById(p.id)
+            console.log(u)
             let s = io.sockets.connected[u.sessionId]
             console.log("found player: ", p)
             if (s) {
