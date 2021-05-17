@@ -36,7 +36,7 @@ class ActiveGames {
     getGame(userId) {
         let players = []
         let blocks = []
-        if (this.status === 0){
+        if (this.status === 0) {
             this.players.forEach(p => {
                 players.push(
                     {
@@ -48,25 +48,10 @@ class ActiveGames {
                     }
                 )
             })
-        }else if (this.status === 1){
-            this.players.forEach(p => {
-                players.push(
-                    {
-                        localId: p.localId,
-                        username: p.username,
-                        shape: p.shape,
-                        color: p.color,
-                        admin: p.admin,
-                        online: p.online,
-                        playing: p.playing,
-                        row: p.row, // non darli tutti ovvio amenoche non sia ribìvelazione
-                        column: p.column // " "
-                    }
-                )
-            })
-            for (let r=0; r<this.blocks.length; r++){
+        } else if (this.status === 1) {
+            for (let r = 0; r < this.blocks.length; r++) {
                 let row = this.blocks[r]
-                for (let c=0; c<row.length; c++){
+                for (let c = 0; c < row.length; c++) {
                     if (row[c] !== 0) blocks.push({
                         row: r,
                         column: c
@@ -78,7 +63,7 @@ class ActiveGames {
         let g = {
             status: this.status,
             obstacles: blocks,
-            players: players,
+            players: this.getPlayers(userId, false), //aggiungi revelation,
             localId: this.getUserByUserId(userId) ? this.getUserByUserId(userId).localId : null,
             settings: {
                 difficulty: this.difficulty,
@@ -88,6 +73,27 @@ class ActiveGames {
 
         }
         return g
+    }
+
+    getPlayers(userId, revelation = false) {
+        let players = []
+        this.players.forEach(p => {
+            let col = null
+            if (p.userId === userId) col = p.column
+            if (revelation) col = p.column
+            let player = {
+                localId: p.localId,
+                username: p.username,
+                shape: p.shape,
+                color: p.color,
+                admin: p.admin,
+                online: p.online,
+                playing: p.playing,
+                row: p.row,
+                column: col
+            }
+        })
+        return players
     }
 
     getUserByUserId(userId) {
@@ -161,11 +167,11 @@ class ActiveGames {
         return false
     }
 
-    changeDifficulty(diff){
+    changeDifficulty(diff) {
         this.difficulty = diff
     }
 
-    startGame(){
+    startGame() {
         this.status = 1
         let blocks = createBlocks(this.difficulty)
         this.blocks = blocks.blocks
@@ -179,26 +185,27 @@ class ActiveGames {
         this.columns = blocks.columns
     }
 
-    changeUserOnline(userId, online){
+    changeUserOnline(userId, online) {
         console.log(this.players)
         this.players.forEach(player => {
-            if (player) if(player.id === userId) player.online = online
+            if (player) if (player.id === userId) player.online = online
         })
     }
 
-    nextTurn(){
+    nextTurn() {
         let n = 0
-        for (let p=0; p<this.players.length; p++){
-            if (this.players[p].playing) n = p; this.players[p].playing = false
+        for (let p = 0; p < this.players.length; p++) {
+            if (this.players[p].playing) n = p;
+            this.players[p].playing = false
         }
         n = (n + 1) % this.players.length
         this.players[n].playing = true
 
     }
 
-    movePawn(userId, row, column){
+    movePawn(userId, row, column) {
         this.players.forEach(p => {
-            if (p.id === userId && p.playing){
+            if (p.id === userId && p.playing) {
                 p.row = row
                 p.column = column
             }
@@ -206,9 +213,9 @@ class ActiveGames {
         this.nextTurn()
     }
 
-    moveBlock(fromR, fromC, toR, toC){
-        if(this.blocks[fromR][fromC] === 1){
-            if (this.blocks[toR][toC] === 0){
+    moveBlock(fromR, fromC, toR, toC) {
+        if (this.blocks[fromR][fromC] === 1) {
+            if (this.blocks[toR][toC] === 0) {
                 this.blocks[toR][toC] = 1
                 this.blocks[fromR][fromC] = 0
             }
