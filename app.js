@@ -28,6 +28,7 @@ io.on('connection', socket => {
         let user = new ActiveUsersManager(userId, gameId, socket.id)
         await user.saveToDb()
         let game = await ActiveGames.getActiveGameById(gameId)
+        console.log(gameId)
         if (!game) {
             game = await ActiveGames.createActiveGame(user, gameId, username)
             await game.saveToDb()
