@@ -213,6 +213,7 @@ class ActiveGames {
                 this.blocks[fromR][fromC] = 0
             }
         }
+        this.nextTurn()
     }
 
     async saveToDb() {
