@@ -39,6 +39,7 @@ io.on('connection', socket => {
         } else if(game.status === 1){
             game.changeUserOnline(user.userId, true)
             await sendGameChangedToPlayers(game)
+            await game.saveToDb()
         }
     })
 
@@ -119,7 +120,8 @@ io.on('connection', socket => {
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
         game.moveBlock(data.from_row, data.from_column, data.to_row, data.to_column)
-        await sendGameChangedToPlayers(game)
+        //await sendGameChangedToPlayers(game)
+        await sendToGame(data, Endpoints.MOVE_BLOCK, game)
         await game.saveToDb()
     })
 
@@ -148,6 +150,15 @@ io.on('connection', socket => {
     })
 })
 
+async function sendToGame(data, endpoint, game){
+    let activeUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+    activeUsers.forEach(u => {
+        let s = io.sockets.connected[u.sessionId]
+        if (s) {
+            s.emit(endpoint, data)
+        }
+    })
+}
 async function sendGameToGame(game, endpoint){
     let activeUsers = await ActiveUsersManager.getUsersByGameId(game.id)
     activeUsers.forEach(u => {
