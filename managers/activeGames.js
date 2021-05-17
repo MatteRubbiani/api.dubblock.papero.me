@@ -194,12 +194,12 @@ class ActiveGames {
     }
 
     moveBlock(fromR, fromC, toR, toC){
-        this.blocks.forEach(b => {
-            if (b.row === fromR && b.column === fromC){
-                b.row = toR
-                b.column = toC
+        if(this.blocks[fromR][fromC] === 1){
+            if (this.blocks[toR][toC] === 0){
+                this.blocks[toR][toC] = 1
+                this.blocks[fromR][fromC] = 0
             }
-        })
+        }
     }
 
     async saveToDb() {
