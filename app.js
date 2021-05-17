@@ -112,6 +112,7 @@ io.on('connection', socket => {
         game.movePawn(user.userId, data.row, data.column)
         await sendGameChangedToPlayers(game)
         await sendToGame("", Endpoints.MOVE_PAWN, game)
+        await sendYourTurn(game)
         await game.saveToDb()
     })
 
@@ -123,6 +124,7 @@ io.on('connection', socket => {
         game.moveBlock(data.from_row, data.from_column, data.to_row, data.to_column)
         await sendGameChangedToPlayers(game)
         await sendToGame(data, Endpoints.MOVE_BLOCK, game)
+        await sendYourTurn(game)
         await game.saveToDb()
     })
 
@@ -176,6 +178,18 @@ async function sendLobbyChangedToPlayers(game) {
 
 async function sendGameChangedToPlayers(game) {
     await sendGameToGame(game, Endpoints.GAME_MODIFIED)
+}
+
+async function sendYourTurn(game){
+    game.players.forEach(p => {
+        if (p.playing){
+            let u = ActiveUsersManager.findActiveUserById(p.id)
+            let s = io.sockets.connected[u.sessionId]
+            if (s) {
+                s.emit(Endpoints.YOUR_TURN, game.getGame(u.userId))
+            }
+        }
+    })
 }
 
 http.listen(3004)

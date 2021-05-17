@@ -9,7 +9,8 @@ Endpoints = {
     START_GAME: "start-game",
     GAME_MODIFIED: "game-modified",
     MOVE_PAWN: "move-pawn",
-    MOVE_BLOCK: "move-block"
+    MOVE_BLOCK: "move-block",
+    YOUR_TURN: "your_turn"
 }
 
 module.exports = Endpoints
