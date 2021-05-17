@@ -193,6 +193,15 @@ class ActiveGames {
         //occhio ai turni
     }
 
+    moveBlock(fromR, fromC, toR, toC){
+        this.blocks.forEach(b => {
+            if (b.row === fromR && b.column === fromC){
+                b.row = toR
+                b.column = toC
+            }
+        })
+    }
+
     async saveToDb() {
         let d = {
             id: this.id,

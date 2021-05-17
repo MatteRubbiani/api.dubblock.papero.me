@@ -113,6 +113,16 @@ io.on('connection', socket => {
         await game.saveToDb()
     })
 
+    socket.on(Endpoints.MOVE_BLOCK, async data => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        game.moveBlock(data.from_row, data.from_column, data.to_row, data.to_column)
+        await sendGameChangedToPlayers(game)
+        await game.saveToDb()
+    })
+
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null
