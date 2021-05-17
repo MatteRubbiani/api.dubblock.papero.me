@@ -12,6 +12,7 @@ class ActiveGamePlayers {
         this.admin = playerDict.admin
         this.row = playerDict.row
         this.column = playerDict.column
+        this.playing = playerDict.playing
     }
 }
 
@@ -57,7 +58,7 @@ class ActiveGames {
                         color: p.color,
                         admin: p.admin,
                         online: p.online,
-                        playing: p.playing, //controlla
+                        playing: p.playing,
                         row: p.row, // non darli tutti ovvio amenoche non sia ribìvelazione
                         column: p.column // " "
                     }
