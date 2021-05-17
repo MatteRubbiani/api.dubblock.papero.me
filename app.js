@@ -110,8 +110,8 @@ io.on('connection', socket => {
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
         game.movePawn(user.userId, data.row, data.column)
-        await sendToGame("", Endpoints.MOVE_PAWN, game)
         await sendGameChangedToPlayers(game)
+        await sendToGame("", Endpoints.MOVE_PAWN, game)
         await game.saveToDb()
     })
 
