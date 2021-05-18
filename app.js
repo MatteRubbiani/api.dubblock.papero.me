@@ -183,12 +183,9 @@ async function sendGameChangedToPlayers(game) {
 async function sendYourTurn(game){
     for (let i=0; i<game.players.length; i++){
         let p = game.players[i]
-        console.log("mitting your turn")
         if (p.playing){
             let u = await ActiveUsersManager.findActiveUserById(p.id)
-            console.log(u)
             let s = io.sockets.connected[u.sessionId]
-            console.log("found player: ", p)
             if (s) {
                 s.emit(Endpoints.YOUR_TURN, "")
             }
