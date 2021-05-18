@@ -184,6 +184,8 @@ class ActiveGames {
         this.status = 1
         let blocks = createBlocks(this.difficulty)
         this.blocks = blocks.blocks
+        this.rows = blocks.rows
+        this.columns = blocks.columns
         this.players.forEach(p => {
             p.row = 0
             p.column = Math.floor(Math.random() * this.columns);
@@ -192,8 +194,6 @@ class ActiveGames {
             p.revelation = 0
         })
         this.players[0].playing = true
-        this.rows = blocks.rows
-        this.columns = blocks.columns
     }
 
     changeUserOnline(userId, online) {
