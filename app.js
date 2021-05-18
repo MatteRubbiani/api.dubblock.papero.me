@@ -147,7 +147,8 @@ io.on('connection', socket => {
         if (!user) return null
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
-        let g = game.getGame(user.userId, true)
+        let g = game.reveal(user.userId)
+        if (!game) return null
         let s = io.sockets.connected[user.sessionId]
         if (s) {
             s.emit(Endpoints.GAME_MODIFIED, g)

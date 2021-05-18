@@ -248,6 +248,19 @@ class ActiveGames {
         return false
     }
 
+    reveal(userId){
+        for (let i=0; i<this.players.length; i++){
+            let p = this.players[i]
+            if (p.id === userId){
+                if (p.revelation < 2){
+                    p.revelation += 1
+                    return this.getGame(userId, true)
+                }
+            }
+        }
+        return null
+    }
+
     async saveToDb() {
         let d = {
             id: this.id,
