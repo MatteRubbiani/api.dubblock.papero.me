@@ -133,7 +133,9 @@ io.on('connection', socket => {
         if (!user) return null
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
-        if (game.earthquake){
+        console.log("aaaaa")
+        let s = game.earthquake
+        if (s){
             await sendGameChangedToPlayers(game)
             await sendToGame("", Endpoints.EARTHQUAKE, game)
             await game.saveToDb()
