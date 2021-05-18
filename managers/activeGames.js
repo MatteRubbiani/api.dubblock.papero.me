@@ -205,7 +205,7 @@ class ActiveGames {
     nextTurn() {
         let n = 0
         for (let p = 0; p < this.players.length; p++) {
-            if (this.players[p].playing) n = p;
+            if (this.players[p].playing && this.players[p].row !== -1) n = p;
             this.players[p].playing = false
         }
         n = (n + 1) % this.players.length
@@ -241,6 +241,7 @@ class ActiveGames {
                     let blocks = createBlocks(this.difficulty)
                     this.blocks = blocks.blocks
                     p.earthquake += 1
+                    this.nextTurn()
                     return true
                 }
             }
@@ -254,6 +255,7 @@ class ActiveGames {
             if (p.id === userId){
                 if (p.revelation < 2){
                     p.revelation += 1
+                    this.nextTurn()
                     return this.getGame(userId, true)
                 }
             }
