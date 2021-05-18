@@ -203,14 +203,28 @@ class ActiveGames {
     }
 
     nextTurn() {
-        let n = 0
+        if (this.gameEnded()) return null
+        let i = 0
         for (let p = 0; p < this.players.length; p++) {
-            if (this.players[p].playing && this.players[p].row !== -1) n = p;
-            this.players[p].playing = false
+            if (this.players[p].playing) {
+                i = p
+            }
         }
-        n = (n + 1) % this.players.length
-        this.players[n].playing = true
-
+        this.players.forEach(p => {
+            p.playing = false
+        })
+        i = (i + 1) % this.players.length
+        while (this.players[i].row === -1) {
+            i = (i + 1) % this.players.length
+        }
+        this.players[i].playing = true
+    }
+    gameEnded(){
+        let not_finished = 0
+        this.players.forEach(p => {
+            if (p.row !== -1) not_finished ++
+        })
+        return not_finished > 1
     }
 
     movePawn(userId, row, column) {
