@@ -134,7 +134,7 @@ io.on('connection', socket => {
         let game = await ActiveGames.getActiveGameById(user.gameId)
         if (!game) return null
         console.log("aaaaa")
-        let s = game.earthquake()
+        let s = game.earthquake(user.userId)
         if (s){
             await sendGameChangedToPlayers(game)
             await sendToGame("", Endpoints.EARTHQUAKE, game)

@@ -234,7 +234,8 @@ class ActiveGames {
     }
 
     earthquake(userId){
-        this.players.forEach(p => {
+        for (let i=0; i<this.players; i++){
+            let p = this.players[i]
             if (p.id === userId){
                 if (p.earthquake < 1){
                     let blocks = createBlocks(this.difficulty)
@@ -243,7 +244,8 @@ class ActiveGames {
                     return true
                 }
             }
-        })
+        }
+        return false
     }
 
     async saveToDb() {
