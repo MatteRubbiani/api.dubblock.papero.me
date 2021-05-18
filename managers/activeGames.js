@@ -186,7 +186,7 @@ class ActiveGames {
         this.blocks = blocks.blocks
         this.players.forEach(p => {
             p.row = 0
-            p.column = Math.floor(Math.random() * this.columns)
+            p.column = Math.floor(Math.random() * this.columns);
             p.playing = false
             p.earthquake = 0
             p.revelation = 0
