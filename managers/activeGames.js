@@ -227,6 +227,7 @@ class ActiveGames {
     earthquake(UserId){
         //aggiungo e controlla
         let blocks = createBlocks(this.difficulty)
+        console.log(blocks)
         this.blocks = blocks.blocks
         return true
     }
