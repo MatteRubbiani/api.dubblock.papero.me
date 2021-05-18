@@ -234,7 +234,7 @@ class ActiveGames {
     }
 
     earthquake(userId){
-        for (let i=0; i<this.players; i++){
+        for (let i=0; i<this.players.length; i++){
             let p = this.players[i]
             if (p.id === userId){
                 if (p.earthquake < 1){
