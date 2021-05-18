@@ -206,9 +206,7 @@ class ActiveGames {
         if (this.gameEnded()) return null
         let i = 0
         for (let p = 0; p < this.players.length; p++) {
-            if (this.players[p].playing) {
-                i = p
-            }
+            if (this.players[p].playing) i = p
         }
         this.players.forEach(p => {
             p.playing = false
@@ -217,14 +215,14 @@ class ActiveGames {
         while (this.players[i].row === -1) {
             i = (i + 1) % this.players.length
         }
-        this.players[i + 1].playing = true
+        this.players[i].playing = true
     }
     gameEnded(){
         let not_finished = 0
         this.players.forEach(p => {
             if (p.row !== -1) not_finished ++
         })
-        return not_finished > 1
+        return not_finished < 1
     }
 
     movePawn(userId, row, column) {
