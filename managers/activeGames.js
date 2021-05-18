@@ -13,6 +13,8 @@ class ActiveGamePlayers {
         this.row = playerDict.row
         this.column = playerDict.column
         this.playing = playerDict.playing
+        this.earthquake = playerDict.earthquake
+        this.revelation = playerDict.revelation
     }
 }
 
@@ -49,7 +51,7 @@ class ActiveGames {
                 )
             })
         } else if (this.status === 1) {
-            players = this.getPlayers(userId, revelation) //aggiungi revelation
+            players = this.getPlayers(userId, revelation)
             for (let r = 0; r < this.blocks.length; r++) {
                 let row = this.blocks[r]
                 for (let c = 0; c < row.length; c++) {
@@ -60,7 +62,10 @@ class ActiveGames {
                 }
             }
         }
-
+        let player = null
+        this.players.forEach(p => {
+            if (p.id === userId) player = p
+        })
         let g = {
             status: this.status,
             obstacles: blocks,
@@ -69,7 +74,9 @@ class ActiveGames {
             settings: {
                 difficulty: this.difficulty,
                 rows: this.rows,
-                columns: this.columns
+                columns: this.columns,
+                earthquake: player ? player.earthquake : null,
+                revelation: player ? player.revelation : null
             }
 
         }
@@ -181,6 +188,8 @@ class ActiveGames {
             p.row = 0
             p.column = Math.floor(Math.random() * this.columns)
             p.playing = false
+            p.earthquake = 0
+            p.revelation = 0
         })
         this.players[0].playing = true
         this.rows = blocks.rows
@@ -224,12 +233,17 @@ class ActiveGames {
         this.nextTurn()
     }
 
-    earthquake(UserId){
-        //aggiungo e controlla
-        let blocks = createBlocks(this.difficulty)
-        console.log(blocks)
-        this.blocks = blocks.blocks
-        return true
+    earthquake(userId){
+        this.players.forEach(p => {
+            if (p.id === userId){
+                if (p.earthquake < 1){
+                    let blocks = createBlocks(this.difficulty)
+                    this.blocks = blocks.blocks
+                    p.earthquake += 1
+                    return true
+                }
+            }
+        })
     }
 
     async saveToDb() {
