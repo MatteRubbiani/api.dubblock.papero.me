@@ -154,6 +154,7 @@ io.on('connection', socket => {
             s.emit(Endpoints.GAME_MODIFIED, g)
             s.emit(Endpoints.EARTHQUAKE, "")
         }
+        await game.saveToDb()
     })
 
     socket.on('disconnect', async () => {
