@@ -142,6 +142,19 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on(Endpoints.REVELATION, async () => {
+        let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+        if (!user) return null
+        let game = await ActiveGames.getActiveGameById(user.gameId)
+        if (!game) return null
+        let g = game.getGame(user.userId, true)
+        let s = io.sockets.connected[user.sessionId]
+        if (s) {
+            s.emit(Endpoints.GAME_MODIFIED, g)
+            s.emit(Endpoints.EARTHQUAKE, "")
+        }
+    })
+
     socket.on('disconnect', async () => {
         let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
         if (!user) return null

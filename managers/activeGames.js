@@ -33,7 +33,7 @@ class ActiveGames {
         this.columns = gameDict.columns
     }
 
-    getGame(userId) {
+    getGame(userId, revelation=false) {
         let players = []
         let blocks = []
         if (this.status === 0) {
@@ -49,7 +49,7 @@ class ActiveGames {
                 )
             })
         } else if (this.status === 1) {
-            players = this.getPlayers(userId, false) //aggiungi revelation
+            players = this.getPlayers(userId, revelation) //aggiungi revelation
             for (let r = 0; r < this.blocks.length; r++) {
                 let row = this.blocks[r]
                 for (let c = 0; c < row.length; c++) {
