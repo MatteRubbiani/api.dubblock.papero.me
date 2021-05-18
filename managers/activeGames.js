@@ -217,7 +217,7 @@ class ActiveGames {
         while (this.players[i].row === -1) {
             i = (i + 1) % this.players.length
         }
-        this.players[i].playing = true
+        this.players[i + 1].playing = true
     }
     gameEnded(){
         let not_finished = 0
