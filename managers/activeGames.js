@@ -224,6 +224,13 @@ class ActiveGames {
         this.nextTurn()
     }
 
+    earthquake(UserId){
+        //aggiungo e controlla
+        let blocks = createBlocks(this.difficulty)
+        this.blocks = blocks.blocks
+        return true
+    }
+
     async saveToDb() {
         let d = {
             id: this.id,
